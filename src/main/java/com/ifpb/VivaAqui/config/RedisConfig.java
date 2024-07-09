@@ -2,6 +2,8 @@ package com.ifpb.VivaAqui.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -18,5 +20,10 @@ public class RedisConfig {
         poolConfig.setTestOnReturn(true);
         poolConfig.setTestWhileIdle(true);
         return new JedisPool(poolConfig, "localhost", 6379);
+    }
+
+    @Bean
+    public Jedis jedis(JedisPool jedisPool) {
+        return jedisPool.getResource();
     }
 }

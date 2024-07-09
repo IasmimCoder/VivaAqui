@@ -17,7 +17,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.args.GeoUnit;
 
-
 @Service
 public class PropertyService {
     @Autowired
