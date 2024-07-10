@@ -47,4 +47,3 @@ public class PropertyService {
         return repository.findAllById(ids);
     }
 }
-
