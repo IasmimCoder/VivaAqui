@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.ifpb.VivaAqui.model.Property;
@@ -60,7 +62,7 @@ public class PropertyService {
             propertyDistances.add(propertyDistance);
         }
 
-        
+
 
         return propertyDistances;
     }
@@ -78,6 +80,10 @@ public class PropertyService {
 
     public List<Property> getAllProperties() {
         return repository.findAll();
+    }
+
+    public Page<PropertyDistance> getAllProperties(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Optional<Property> getPropertyById(Long id) {
