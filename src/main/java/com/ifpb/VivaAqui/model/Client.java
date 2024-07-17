@@ -4,25 +4,33 @@ package com.ifpb.VivaAqui.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String cpf;
     private String name;
 
-    @OneToMany
-    private List<Property> offeredProperty;
+    @OneToMany(fetch =FetchType.EAGER)
+    @JoinColumn(name = "offeredProperty")
+    private Set<Property> offeredProperty;
 
-    @OneToMany
-    private List<Property> favoriteProperty;
+    @OneToMany(fetch =FetchType.EAGER)
+    @JoinColumn(name = "favoriteProperty")
+    private Set<Property> favoriteProperty;
 
-    @OneToMany
+    @OneToOne
+    @JoinColumn(name = "AreaDePesquisa")
     private AreaDePesquisa areaDePesquisa;
 
     public Client() {
+    }
+
+    public Client(String name, String cpf) {
+        this.name = name;
+        this.cpf = cpf;
     }
 
     public String getCpf() {
@@ -41,19 +49,19 @@ public class Client {
         this.name = name;
     }
 
-    public List<Property> getOfferedProperty() {
+    public Set<Property> getOfferedProperty() {
         return offeredProperty;
     }
 
-    public void setOfferedProperty(List<Property> offeredProperty) {
+    public void setOfferedProperty(Set<Property> offeredProperty) {
         this.offeredProperty = offeredProperty;
     }
 
-    public List<Property> getFavoriteProperty() {
+    public Set<Property> getFavoriteProperty() {
         return favoriteProperty;
     }
 
-    public void setFavoriteProperty(List<Property> favoriteProperty) {
+    public void setFavoriteProperty(Set<Property> favoriteProperty) {
         this.favoriteProperty = favoriteProperty;
     }
 

@@ -16,13 +16,12 @@ public class ClientController {
     @Autowired
     private ClientService service;
 
-   @PostMapping ("/client")
+   @PostMapping
     public ResponseEntity<?> addClient(@RequestBody Client client){
        return service.addClient(client);
    }
 
-   @Autowired
-   @GetMapping("/client")
+   @GetMapping("/cpf")
     public ResponseEntity<?> getClient(@RequestParam String cpf){
        return service.getClient(cpf);
     }

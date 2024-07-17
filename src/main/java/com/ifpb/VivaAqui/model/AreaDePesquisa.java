@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class AreaDePesquisa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Double longitude;
     private Double latitude;

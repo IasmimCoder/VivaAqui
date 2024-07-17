@@ -3,15 +3,11 @@ package com.ifpb.VivaAqui.service;
 import ch.qos.logback.core.joran.conditional.ElseAction;
 import com.ifpb.VivaAqui.model.Client;
 import com.ifpb.VivaAqui.model.Message;
-import com.ifpb.VivaAqui.model.Property;
 import com.ifpb.VivaAqui.repository.ClientRepository;
-import com.ifpb.VivaAqui.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.Optional;
 
