@@ -68,6 +68,13 @@
 			<version>42.2.20</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.2.3.Final</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
