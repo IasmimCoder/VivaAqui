@@ -1,27 +1,34 @@
 package com.ifpb.VivaAqui.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tb_property")
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String description;
     private String address;
+    @Column(name = "longitude", columnDefinition = "DOUBLE PRECISION")
     private double longitude;
+    @Column(name = "latitude", columnDefinition = "DOUBLE PRECISION")
     private double latitude;
 
 
     public Property() {
     }
 
-    public Property(Long id, String name, String address, double longitude, double latitude) {
+    public Property(Long id, String name, String description, String address, double longitude, double latitude) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -67,15 +74,24 @@ public class Property {
         this.latitude = latitude;
     }
 
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "{" +
             " id='" + getId() + "'" +
             ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
             ", address='" + getAddress() + "'" +
             ", longitude='" + getLongitude() + "'" +
             ", latitude='" + getLatitude() + "'" +
             "}";
     }
-    
 }

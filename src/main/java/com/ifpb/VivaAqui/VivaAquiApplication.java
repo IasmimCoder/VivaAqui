@@ -9,5 +9,4 @@ public class VivaAquiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VivaAquiApplication.class, args);
 	}
-
 }

@@ -4,10 +4,13 @@ spring:
     username: app_admin
     password: 123456
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+
   data:
     redis:
       host: localhost
@@ -15,3 +18,4 @@ spring:
 
 server:
   port: 8080
+
