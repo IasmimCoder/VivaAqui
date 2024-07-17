@@ -5,8 +5,8 @@ services:
     image: postgres:16
     container_name: vivaqui_postgres
     environment:
-      POSTGRES_DB: viva
-      POSTGRES_USER: admin
+      POSTGRES_DB: VivaAqui
+      POSTGRES_USER: app_admin
       POSTGRES_PASSWORD: 123456
     volumes:
       - pgdata:/var/lib/postgresql/data

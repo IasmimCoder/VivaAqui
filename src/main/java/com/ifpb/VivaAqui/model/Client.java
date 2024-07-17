@@ -1,29 +1,23 @@
 package com.ifpb.VivaAqui.model;
 
-
 import jakarta.persistence.*;
-
-import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "tb_client")
 public class Client {
 
     @Id
     private String cpf;
     private String name;
 
-    @OneToMany(fetch =FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "offeredProperty")
     private Set<Property> offeredProperty;
 
-    @OneToMany(fetch =FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "favoriteProperty")
     private Set<Property> favoriteProperty;
-
-    @OneToOne
-    @JoinColumn(name = "AreaDePesquisa")
-    private AreaDePesquisa areaDePesquisa;
 
     public Client() {
     }
@@ -70,8 +64,6 @@ public class Client {
                 "cpf='" + cpf + '\'' +
                 ", name='" + name + '\'' +
                 ", offeredProperty=" + offeredProperty +
-                ", favoriteProperty=" + favoriteProperty +
-             //   ", areaDePesquisa=" + areaDePesquisa +
-                '}';
+                ", favoriteProperty=" + favoriteProperty;
     }
 }

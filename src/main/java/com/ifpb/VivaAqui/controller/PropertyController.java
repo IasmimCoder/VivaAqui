@@ -37,15 +37,15 @@ public class PropertyController {
     }
 
     
+    // @GetMapping("/nearby")
+    // public Page<PropertyDistance> getNearbyProperties(@PageableDefault(page = 0, size = 4, sort = "distance", direction = Sort.Direction.ASC) Pageable pageable) {
+    //     return service.getAllProperties(pageable);
+    // }
+
     @GetMapping("/nearby")
-    public Page<PropertyDistance> getNearbyProperties(@PageableDefault(page = 0, size = 4, sort = "distance", direction = Sort.Direction.ASC) Pageable pageable) {
+    public List<PropertyDistance> getNearbyProperties(@RequestParam double longitude, @RequestParam double latitude,
+                                              @RequestParam double radiusKm) {
         return service.getNearbyProperties(longitude, latitude, radiusKm);
     }
-
-    // @GetMapping("/nearby")
-    // public List<PropertyDistance> getNearbyProperties(@RequestParam double longitude, @RequestParam double latitude,
-    //                                           @RequestParam double radiusKm) {
-    //     return service.getNearbyProperties(longitude, latitude, radiusKm);
-    // }
 }
 

@@ -27,13 +27,13 @@ public class ClientService {
         return new ResponseEntity<>(repository.save(client), HttpStatus.CREATED);
     }
 
-    public ResponseEntity getClient(String cpf){
+    public ResponseEntity<?> getClient(String cpf){
         Optional<Client> optional = repository.findById(cpf);
         if (optional.isPresent()){
             return new ResponseEntity<>(optional.get(), HttpStatus.FOUND);
         }
         message.setMensagem("Cliente não encontrado");
-        return new ResponseEntity(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
     //Metodo para buscar todos os Clientes

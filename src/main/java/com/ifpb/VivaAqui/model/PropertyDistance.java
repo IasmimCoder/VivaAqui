@@ -1,5 +1,6 @@
 package com.ifpb.VivaAqui.model;
 
+
 public class PropertyDistance {
     private Property property;
     private double distance;
