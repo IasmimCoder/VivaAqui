@@ -6,8 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.ifpb.VivaAqui.model.Property;
@@ -16,10 +14,8 @@ import com.ifpb.VivaAqui.repository.PropertyRepository;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.GeoCoordinate;
-import redis.clients.jedis.params.GeoRadiusParam;
 import redis.clients.jedis.resps.GeoRadiusResponse;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.args.GeoUnit;
 import static java.lang.Math.*;
 
@@ -61,9 +57,6 @@ public class PropertyService {
             PropertyDistance propertyDistance = new PropertyDistance(property, distanceCortado);
             propertyDistances.add(propertyDistance);
         }
-
-
-
         return propertyDistances;
     }
 
@@ -82,9 +75,6 @@ public class PropertyService {
         return repository.findAll();
     }
 
-    public Page<PropertyDistance> getAllProperties(Pageable pageable) {
-        return repository.findAll(pageable);
-    }
 
     public Optional<Property> getPropertyById(Long id) {
         return repository.findById(id);

@@ -1,11 +1,14 @@
 package com.ifpb.VivaAqui.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tb_property")
 public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +16,9 @@ public class Property {
     private String name;
     private String description;
     private String address;
+    @Column(name = "longitude", columnDefinition = "DOUBLE PRECISION")
     private double longitude;
+    @Column(name = "latitude", columnDefinition = "DOUBLE PRECISION")
     private double latitude;
 
 
