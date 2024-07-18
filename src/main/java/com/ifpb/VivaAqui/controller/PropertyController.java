@@ -28,8 +28,8 @@ public class PropertyController {
     private PropertyService service;
 
     @PostMapping
-    public Property addProperty(@RequestBody Property property, String owner) {
-        return service.addProperty(property, owner);
+    public Property addProperty(@RequestBody Property property) {
+        return service.addProperty(property);
     }
 
     @GetMapping

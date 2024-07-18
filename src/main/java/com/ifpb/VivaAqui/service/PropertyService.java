@@ -35,11 +35,11 @@ public class PropertyService {
     @Autowired
     private JedisPool jedisPool;
 
-    public Property addProperty(Property property, String cpf) {
-        Client client = clientRepository.findById(cpf).orElseThrow(
-            () -> new NotFoundException("Cliente não encontrado")
-        );
-        property.setOwner(client);
+    public Property addProperty(Property property) {
+        // Client client = clientRepository.findById(cpf).orElseThrow(
+        //     () -> new NotFoundException("Cliente não encontrado")
+        // );
+        // property.setOwner(client);
         repository.save(property);
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.geoadd("properties", property.getLongitude(), property.getLatitude(), "property:" + property.getId());
