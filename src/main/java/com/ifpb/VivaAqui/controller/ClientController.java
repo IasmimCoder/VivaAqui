@@ -21,7 +21,7 @@ public class ClientController {
        return service.addClient(client);
    }
 
-   @GetMapping("/cpf")
+   @GetMapping("/getClient")
     public ResponseEntity<?> getClient(@RequestParam String cpf){
        return service.getClient(cpf);
     }
@@ -31,6 +31,9 @@ public class ClientController {
         return service.getAllClients();
     }
 
-
+    @PostMapping("/addFavoriteProperty/{cpf}/{idProperty}")
+    public ResponseEntity<?> addFavoriteProperty(@PathVariable String cpf, @PathVariable Long idProperty){
+       return service.addFavoriteProperty(cpf, idProperty);
+    }
 
 }
