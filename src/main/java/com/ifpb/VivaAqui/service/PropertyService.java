@@ -24,6 +24,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.args.GeoUnit;
 import static java.lang.Math.*;
 
+import com.ifpb.VivaAqui.exception.*;
+
 @Service
 public class PropertyService {
     @Autowired
@@ -36,11 +38,12 @@ public class PropertyService {
     private JedisPool jedisPool;
 
     public Property addProperty(Property property) {
-        // Client client = clientRepository.findById(cpf).orElseThrow(
-        //     () -> new NotFoundException("Cliente não encontrado")
-        // );
-        // property.setOwner(client);
+        Client client = clientRepository.findById(property.getCpfOwner()).orElseThrow(
+            () -> new NotFoundException("Cliente não encontrado")
+        );
+        client.getOfferedProperty().add(property);
         repository.save(property);
+        //adicionar na lista de ofertadas do Cliente
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.geoadd("properties", property.getLongitude(), property.getLatitude(), "property:" + property.getId());
         }
@@ -93,12 +96,42 @@ public class PropertyService {
         );
     }
 
-    public Property updateStatusProperty(Long id, String cpf, EnumStatus enumStatus){
+    private boolean verificarCpf(String cpf, Long idProperty){
+        Property property = getById(idProperty);
+        if (cpf.equals(property.getCpfOwner())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Property updateStatusProperty(Long id, String cpf, String status){
         Property property = getById(id);
-        if (!cpf.equals(property.getOwner().getCpf())) {
+        if(verificarCpf(cpf, id)){
+
+            EnumStatus statusAtualizado = EnumStatus.valueOf(status);
+            property.setStatus(statusAtualizado);
+            return repository.save(property);
+        } else {
+            throw new UnauthorizedException("Não autorizado");
+        }
+    }
+
+    public Property updateProperty(Long id, String cpf, Property property) {
+        Property propertyAtual = getById(id);
+        if (!cpf.equals(propertyAtual.getCpfOwner())) {
             new UnauthorizedException("Não autorizado");
         }
-        property.setStatus(enumStatus);
-        return repository.save(property);
+        return repository.findById(id).map(existingProperty -> {
+            existingProperty.setName(property.getName());
+            existingProperty.setDescription(property.getDescription());
+            existingProperty.setAddress(property.getAddress());
+            existingProperty.setLongitude(property.getLongitude());
+            existingProperty.setLatitude(property.getLatitude());
+            existingProperty.setStatus(property.getStatus());
+            repository.save(existingProperty);
+            return existingProperty;
+        }).orElseThrow(() -> new NotFoundException("Propriedade não encontrada"));
     }
+
+    // 
 }

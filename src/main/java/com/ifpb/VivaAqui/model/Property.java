@@ -27,13 +27,12 @@ public class Property {
     @Enumerated(EnumType.STRING)
     private EnumStatus status;
 
-    @OneToOne
-    private Client owner;
+    private String cpfOwner;
 
     public Property() {
     }
 
-    public Property(Long id, String name, String description, String address, double longitude, double latitude, EnumStatus status, Client owner) {
+    public Property(Long id, String name, String description, String address, double longitude, double latitude, EnumStatus status, String owner) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -41,7 +40,7 @@ public class Property {
         this.longitude = longitude;
         this.latitude = latitude;
         this.status = status;
-        this.owner = owner;
+        this.cpfOwner = owner;
     }
 
     public Long getId() {
@@ -84,7 +83,6 @@ public class Property {
         this.latitude = latitude;
     }
 
-
     public String getDescription() {
         return this.description;
     }
@@ -101,12 +99,12 @@ public class Property {
         this.status = status;
     }
 
-    public Client getOwner() {
-        return this.owner;
+    public String getCpfOwner() {
+        return this.cpfOwner;
     }
 
-    public void setOwner(Client owner) {
-        this.owner = owner;
+    public void setCpfOwner(String cpfOwner) {
+        this.cpfOwner = cpfOwner;
     }
 
     @Override
@@ -119,7 +117,7 @@ public class Property {
             ", longitude='" + getLongitude() + "'" +
             ", latitude='" + getLatitude() + "'" +
             ", status='" + getStatus() + "'" +
-            ", owner='" + getOwner() + "'" +
+            ", cpfOwner='" + getCpfOwner() + "'" +
             "}";
     }
 }
