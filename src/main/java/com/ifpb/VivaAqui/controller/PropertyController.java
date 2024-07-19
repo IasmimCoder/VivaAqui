@@ -6,6 +6,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import com.ifpb.VivaAqui.model.Client;
+import com.ifpb.VivaAqui.model.EnumStatus;
 import com.ifpb.VivaAqui.model.Property;
 import com.ifpb.VivaAqui.model.PropertyDistance;
 import com.ifpb.VivaAqui.service.PropertyService;
@@ -13,6 +15,10 @@ import com.ifpb.VivaAqui.service.PropertyService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/properties")
@@ -28,12 +34,12 @@ public class PropertyController {
 
     @GetMapping
     public List<Property> getAllProperties() {
-        return service.getAllProperties();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Property> getPropertyById(@PathVariable Long id) {
-        return service.getPropertyById(id);
+    public Property getPropertyById(@PathVariable Long id) {
+        return service.getById(id);
     }
 
     
@@ -46,6 +52,11 @@ public class PropertyController {
     public List<PropertyDistance> getNearbyProperties(@RequestParam double longitude, @RequestParam double latitude,
                                               @RequestParam double radiusKm) {
         return service.getNearbyProperties(longitude, latitude, radiusKm);
+    }
+
+    @PutMapping("/{id}")
+    public Property updateStatus(@PathVariable Long id, @RequestBody String cpf, EnumStatus enumStatus) {
+        return service.updateStatusProperty(id, cpf, enumStatus);
     }
 }
 
