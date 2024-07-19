@@ -15,9 +15,6 @@ import com.ifpb.VivaAqui.service.PropertyService;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -54,9 +51,21 @@ public class PropertyController {
         return service.getNearbyProperties(longitude, latitude, radiusKm);
     }
 
-    @PutMapping("/{id}")
-    public Property updateStatus(@PathVariable Long id, @RequestBody String cpf, EnumStatus enumStatus) {
-        return service.updateStatusProperty(id, cpf, enumStatus);
+    // @PutMapping("/status/{id}")
+    // public Property updateStatus(@PathVariable Long id, @RequestBody String cpf, @RequestBody String status) {
+    //     System.out.println(status);
+    //     System.out.println(status.getClass());
+    //     return service.updateStatusProperty(id, cpf, status);
+    // }
+
+    @PutMapping("/status/{id}")
+    public Property updateStatus(@PathVariable Long id, @RequestBody UpdateStatusRequest request) {
+        return service.updateStatusProperty(id, request.getCpf(), request.getStatus());
+    }
+
+    @PutMapping("/{id}&{cpf}")
+    public Property update(@PathVariable Long id, String cpf, @RequestBody Property property) {
+        return service.updateProperty(id, cpf, property);
     }
 }
 
