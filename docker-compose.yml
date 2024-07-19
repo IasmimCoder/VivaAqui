@@ -7,19 +7,29 @@ services:
     environment:
       POSTGRES_DB: VivaAqui
       POSTGRES_USER: app_admin
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_PASSWORD: 123456  # Considere usar variáveis de ambiente
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: always
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_admin"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   redis:
     image: redis:6.2
     container_name: vivaqui_redis
     ports:
       - "6379:6379"
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   pgdata:

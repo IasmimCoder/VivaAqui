@@ -10,6 +10,7 @@ spring:
       ddl-auto: update
       dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+    open-in-view: false
 
   data:
     redis:
@@ -18,4 +19,3 @@ spring:
 
 server:
   port: 8080
-
