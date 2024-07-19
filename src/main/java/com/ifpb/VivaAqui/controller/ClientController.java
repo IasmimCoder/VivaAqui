@@ -21,8 +21,13 @@ public class ClientController {
        return service.addClient(client);
    }
 
-   @GetMapping("/getClient")
-    public ResponseEntity<?> getClient(@RequestParam String cpf){
+//    @GetMapping("/cpf")
+//     public ResponseEntity<?> getClient(@RequestParam String cpf){
+//        return service.getClient(cpf);
+//     }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<?> getClient(@PathVariable String cpf){
        return service.getClient(cpf);
     }
 
