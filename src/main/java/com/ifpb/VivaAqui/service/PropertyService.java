@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ifpb.VivaAqui.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.ifpb.VivaAqui.model.Property;
-import com.ifpb.VivaAqui.model.PropertyDistance;
+import com.ifpb.VivaAqui.exception.NotFoundException;
+import com.ifpb.VivaAqui.exception.UnauthorizedException;
+import com.ifpb.VivaAqui.repository.ClientRepository;
 import com.ifpb.VivaAqui.repository.PropertyRepository;
 
 import redis.clients.jedis.Jedis;
@@ -19,16 +23,29 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.args.GeoUnit;
 import static java.lang.Math.*;
 
+import com.ifpb.VivaAqui.exception.*;
+
 @Service
 public class PropertyService {
     @Autowired
     private PropertyRepository repository;
+
+    @Autowired
+    private ClientRepository clientRepository;
   
     @Autowired
     private JedisPool jedisPool;
 
-      public Property addProperty(Property property) {
+    @Autowired
+    private Message message;
+
+    public Property addProperty(Property property) {
+        Client client = clientRepository.findById(property.getCpfOwner()).orElseThrow(
+            () -> new NotFoundException("Cliente não encontrado")
+        );
+        client.getOfferedProperty().add(property);
         repository.save(property);
+        //adicionar na lista de ofertadas do Cliente
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.geoadd("properties", property.getLongitude(), property.getLatitude(), "property:" + property.getId());
         }
@@ -71,12 +88,75 @@ public class PropertyService {
         return R * c; // Retorna a distância em Km
     }
 
-    public List<Property> getAllProperties() {
+    public List<Property> getAll() {
         return repository.findAll();
     }
 
+    public Property getById(Long id) {
+        return repository.findById(id).orElseThrow(
+            () -> new NotFoundException("Propriedade não encontrada")
+        );
+    }
 
-    public Optional<Property> getPropertyById(Long id) {
-        return repository.findById(id);
+    private boolean verificarCpf(String cpf, Long idProperty){
+        Property property = getById(idProperty);
+        if (cpf.equals(property.getCpfOwner())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Property updateStatusProperty(Long id, String cpf, String status){
+        Property property = getById(id);
+        if(verificarCpf(cpf, id)){
+
+            EnumStatus statusAtualizado = EnumStatus.valueOf(status);
+            property.setStatus(statusAtualizado);
+            return repository.save(property);
+        } else {
+            throw new UnauthorizedException("Não autorizado");
+        }
+    }
+
+    public Property updateProperty(Long id, String cpf, Property property) {
+        Property existingProperty = getById(id);
+
+        if (verificarCpf(cpf, id)) {
+            existingProperty.setName(property.getName());
+            existingProperty.setDescription(property.getDescription());
+            existingProperty.setAddress(property.getAddress());
+            existingProperty.setLongitude(property.getLongitude());
+            existingProperty.setLatitude(property.getLatitude());
+            existingProperty.setStatus(property.getStatus());
+            return repository.save(existingProperty);
+        }
+
+        throw new UnauthorizedException("Não autorizado");
+    }
+
+
+    public ResponseEntity<?> deletePropety(Long idProperty, String cpf){
+
+        Optional<Property> optionalProperty = repository.findById(idProperty);
+        Optional<Client> optionalClient = clientRepository.findById(cpf);
+
+        if (!optionalProperty.isPresent()) {
+            message.setMensagem("Propriedade não encontrada");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+        else if (!optionalClient.isPresent()){
+            message.setMensagem("Cliente não encontrado.");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+        Client client = optionalClient.get();
+        Property property = optionalProperty.get();
+        if(!client.getOfferedProperty().contains(property)){
+            message.setMensagem("Propriedade não pertence a esse cliente.");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+
+        repository.deleteById(idProperty);
+        message.setMensagem("Propriedade removida com sucesso.");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

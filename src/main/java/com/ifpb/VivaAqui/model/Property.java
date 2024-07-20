@@ -2,9 +2,12 @@ package com.ifpb.VivaAqui.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,22 +19,26 @@ public class Property {
     private String name;
     private String description;
     private String address;
-    @Column(name = "longitude", columnDefinition = "DOUBLE PRECISION")
     private double longitude;
-    @Column(name = "latitude", columnDefinition = "DOUBLE PRECISION")
     private double latitude;
 
+    @Enumerated(EnumType.STRING)
+    private EnumStatus status;
+
+    private String cpfOwner;
 
     public Property() {
     }
 
-    public Property(Long id, String name, String description, String address, double longitude, double latitude) {
+    public Property(Long id, String name, String description, String address, double longitude, double latitude, EnumStatus status, String owner) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.status = status;
+        this.cpfOwner = owner;
     }
 
     public Long getId() {
@@ -74,13 +81,28 @@ public class Property {
         this.latitude = latitude;
     }
 
-
     public String getDescription() {
         return this.description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public EnumStatus getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(EnumStatus status) {
+        this.status = status;
+    }
+
+    public String getCpfOwner() {
+        return this.cpfOwner;
+    }
+
+    public void setCpfOwner(String cpfOwner) {
+        this.cpfOwner = cpfOwner;
     }
 
     @Override
@@ -92,6 +114,8 @@ public class Property {
             ", address='" + getAddress() + "'" +
             ", longitude='" + getLongitude() + "'" +
             ", latitude='" + getLatitude() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", cpfOwner='" + getCpfOwner() + "'" +
             "}";
     }
 }
