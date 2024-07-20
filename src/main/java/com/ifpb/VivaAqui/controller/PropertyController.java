@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ifpb.VivaAqui.model.Client;
@@ -66,6 +67,11 @@ public class PropertyController {
     @PutMapping("/{id}&{cpf}")
     public Property update(@PathVariable Long id, String cpf, @RequestBody Property property) {
         return service.updateProperty(id, cpf, property);
+    }
+
+    @DeleteMapping("/{idProperty}/{cpf}")
+    public ResponseEntity<?> deleteProperty(@PathVariable Long idProperty, @PathVariable String cpf){
+        return service.deletePropety(idProperty,cpf);
     }
 }
 

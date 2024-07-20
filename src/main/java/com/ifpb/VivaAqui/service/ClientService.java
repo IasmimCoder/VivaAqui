@@ -26,8 +26,7 @@ public class ClientService {
     @Autowired
     private Message message;
 
-    //OK
-    //Metodo para cliar cliente (cpf e nome)
+    //Metodo para cliar cliente
     public ResponseEntity<?> addClient(Client client){
 
         if (client.getName().equals("")|| client.getCpf().equals("")){
@@ -40,7 +39,7 @@ public class ClientService {
         return new ResponseEntity<>(clientRepository.save(client), HttpStatus.CREATED);
     }
 
-    //ok
+
     public ResponseEntity<?> getClient(String cpf){
 
         Optional<Client> optional = clientRepository.findById(cpf);
@@ -53,14 +52,14 @@ public class ClientService {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
-    //ok
+
     //Metodo para buscar todos os Clientes
     public  ResponseEntity<?> getAllClients(){
 
         return new ResponseEntity<>(clientRepository.findAll(), HttpStatus.OK);
     }
 
-    //ok
+
     //Metodo para adicionar propriedade aos favoritos de um cliente
     public ResponseEntity<?> addFavoriteProperty(String cpf, Long idProperty){
 
@@ -77,6 +76,7 @@ public class ClientService {
         }
 
         Client client = optionalClient.get();
+
         Property property = optionalProperty.get();
 
         client.getFavoriteProperty().add(property);
@@ -84,7 +84,7 @@ public class ClientService {
         return new ResponseEntity<>(clientRepository.save(client), HttpStatus.CREATED);
     }
 
-    //ok
+
     //Metodo para atulizar nome do cliente
     public ResponseEntity<?> updateClient(String cpf, String novoNome){
         if (novoNome.equals("")|| cpf.equals("")){
@@ -102,7 +102,7 @@ public class ClientService {
         return new ResponseEntity<>(clientRepository.save(client), HttpStatus.OK);
     }
 
-    //ok
+
     //Metodo para remover Cliente
     public ResponseEntity<?> deleteCliente(String cpf){
         if (cpf.equals("")){
@@ -114,13 +114,12 @@ public class ClientService {
             message.setMensagem("Cliente não encontrado.");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
-        //fazer while para deletar todas as propriedades da lista
         clientRepository.deleteById(cpf);
         message.setMensagem("Cliente removido com sucesso.");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //ok
+
     //Metodo para remover propriedade favorita da lista
     public ResponseEntity<?> removeFavoriteProperty(String cpf, Long idProperty){
 

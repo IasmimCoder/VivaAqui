@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ifpb.VivaAqui.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ifpb.VivaAqui.exception.NotFoundException;
 import com.ifpb.VivaAqui.exception.UnauthorizedException;
-import com.ifpb.VivaAqui.model.Client;
-import com.ifpb.VivaAqui.model.EnumStatus;
-import com.ifpb.VivaAqui.model.Property;
-import com.ifpb.VivaAqui.model.PropertyDistance;
 import com.ifpb.VivaAqui.repository.ClientRepository;
 import com.ifpb.VivaAqui.repository.PropertyRepository;
 
@@ -36,6 +35,9 @@ public class PropertyService {
   
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private Message message;
 
     public Property addProperty(Property property) {
         Client client = clientRepository.findById(property.getCpfOwner()).orElseThrow(
@@ -133,5 +135,30 @@ public class PropertyService {
         }).orElseThrow(() -> new NotFoundException("Propriedade não encontrada"));
     }
 
-    // 
+    //
+
+    public ResponseEntity<?> deletePropety(Long idProperty, String cpf){
+
+        Optional<Property> optionalProperty = repository.findById(idProperty);
+        Optional<Client> optionalClient = clientRepository.findById(cpf);
+
+        if (!optionalProperty.isPresent()) {
+            message.setMensagem("Propiedade não encontrada");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+        else if (!optionalClient.isPresent()){
+            message.setMensagem("Cliente não encontrado.");
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+        Client client = optionalClient.get();
+        Property property = optionalProperty.get();
+        if(!client.getOfferedProperty().contains(property)){
+            message.setMensagem("Propriedade não pertence a esse cliente.");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+
+        repository.deleteById(idProperty);
+        message.setMensagem("Propiedade removido com sucesso.");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
