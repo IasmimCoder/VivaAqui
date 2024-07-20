@@ -11,7 +11,7 @@ public class Client {
     private String cpf;
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinColumn(name = "offeredProperty")
     private Set<Property> offeredProperty;
 

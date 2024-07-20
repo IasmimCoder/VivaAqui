@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ifpb.VivaAqui.model.Client;
@@ -39,24 +40,11 @@ public class PropertyController {
         return service.getById(id);
     }
 
-    
-    // @GetMapping("/nearby")
-    // public Page<PropertyDistance> getNearbyProperties(@PageableDefault(page = 0, size = 4, sort = "distance", direction = Sort.Direction.ASC) Pageable pageable) {
-    //     return service.getAllProperties(pageable);
-    // }
-
     @GetMapping("/nearby")
     public List<PropertyDistance> getNearbyProperties(@RequestParam double longitude, @RequestParam double latitude,
                                               @RequestParam double radiusKm) {
         return service.getNearbyProperties(longitude, latitude, radiusKm);
     }
-
-    // @PutMapping("/status/{id}")
-    // public Property updateStatus(@PathVariable Long id, @RequestBody String cpf, @RequestBody String status) {
-    //     System.out.println(status);
-    //     System.out.println(status.getClass());
-    //     return service.updateStatusProperty(id, cpf, status);
-    // }
 
     @PutMapping("/status/{id}")
     public Property updateStatus(@PathVariable Long id, @RequestBody UpdateStatusRequest request) {
@@ -64,8 +52,13 @@ public class PropertyController {
     }
 
     @PutMapping("/{id}&{cpf}")
-    public Property update(@PathVariable Long id, String cpf, @RequestBody Property property) {
+    public Property update(@PathVariable Long id, @PathVariable String cpf, @RequestBody Property property) {
         return service.updateProperty(id, cpf, property);
+    }
+
+    @DeleteMapping("/{idProperty}/{cpf}")
+    public ResponseEntity<?> deleteProperty(@PathVariable Long idProperty, @PathVariable String cpf){
+        return service.deletePropety(idProperty,cpf);
     }
 }
 
