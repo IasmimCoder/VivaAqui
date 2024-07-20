@@ -119,23 +119,21 @@ public class PropertyService {
     }
 
     public Property updateProperty(Long id, String cpf, Property property) {
-        Property propertyAtual = getById(id);
-        if (!cpf.equals(propertyAtual.getCpfOwner())) {
-            new UnauthorizedException("Não autorizado");
-        }
-        return repository.findById(id).map(existingProperty -> {
+        Property existingProperty = getById(id);
+
+        if (verificarCpf(cpf, id)) {
             existingProperty.setName(property.getName());
             existingProperty.setDescription(property.getDescription());
             existingProperty.setAddress(property.getAddress());
             existingProperty.setLongitude(property.getLongitude());
             existingProperty.setLatitude(property.getLatitude());
             existingProperty.setStatus(property.getStatus());
-            repository.save(existingProperty);
-            return existingProperty;
-        }).orElseThrow(() -> new NotFoundException("Propriedade não encontrada"));
+            return repository.save(existingProperty);
+        }
+
+        throw new UnauthorizedException("Não autorizado");
     }
 
-    //
 
     public ResponseEntity<?> deletePropety(Long idProperty, String cpf){
 
@@ -143,7 +141,7 @@ public class PropertyService {
         Optional<Client> optionalClient = clientRepository.findById(cpf);
 
         if (!optionalProperty.isPresent()) {
-            message.setMensagem("Propiedade não encontrada");
+            message.setMensagem("Propriedade não encontrada");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
         else if (!optionalClient.isPresent()){
@@ -158,7 +156,7 @@ public class PropertyService {
         }
 
         repository.deleteById(idProperty);
-        message.setMensagem("Propiedade removido com sucesso.");
+        message.setMensagem("Propriedade removida com sucesso.");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

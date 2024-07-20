@@ -19,9 +19,7 @@ public class Property {
     private String name;
     private String description;
     private String address;
-    @Column(name = "longitude", columnDefinition = "DOUBLE PRECISION")
     private double longitude;
-    @Column(name = "latitude", columnDefinition = "DOUBLE PRECISION")
     private double latitude;
 
     @Enumerated(EnumType.STRING)
