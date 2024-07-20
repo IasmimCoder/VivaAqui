@@ -21,10 +21,6 @@ public class ClientController {
        return service.addClient(client);
    }
 
-//    @GetMapping("/cpf")
-//     public ResponseEntity<?> getClient(@RequestParam String cpf){
-//        return service.getClient(cpf);
-//     }
 
     @GetMapping("/{cpf}")
     public ResponseEntity<?> getClient(@PathVariable String cpf){
@@ -35,4 +31,25 @@ public class ClientController {
     public ResponseEntity<?> getAllClients(){
         return service.getAllClients();
     }
+
+    @PostMapping("/addFavoriteProperty/{cpf}/{idProperty}")
+    public ResponseEntity<?> addFavoriteProperty(@PathVariable String cpf, @PathVariable Long idProperty){
+       return service.addFavoriteProperty(cpf, idProperty);
+    }
+
+    @PutMapping("/update/{cpf}/{novoNome}")
+    public ResponseEntity<?> updateClient(@PathVariable String cpf, @PathVariable String novoNome){
+       return service.updateClient(cpf, novoNome);
+    }
+
+    @DeleteMapping("/delete/{cpf}")
+    public ResponseEntity<?> deleteClient(@PathVariable String cpf){
+        return service.deleteCliente(cpf);
+    }
+
+    @PostMapping("/removeFavoriteProperty/{cpf}/{idProperty}")
+    public ResponseEntity<?> removeFavoriteProperty(@PathVariable String cpf, @PathVariable Long idProperty){
+        return service.removeFavoriteProperty(cpf, idProperty);
+    }
+
 }
