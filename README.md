@@ -5,18 +5,18 @@ VivaAqui é uma aplicação de gerenciamento de imóveis desenvolvida com Spring
 2. Buscar imóveis dentro de um raio específico: Permite encontrar imóveis próximos a uma localização especificada pelo usuário.
 
 ## Tecnologias Utilizadas
-Java 17+
-Spring Boot
-Spring Data JPA (Hibernate)
-PostgreSQL
-Redis
-Maven
-Docker
+- Java 17+
+- Spring Boot
+- Spring Data JPA (Hibernate)
+- PostgreSQL
+- Redis
+- Maven
+- Docker
 
 ## Estados da Propriedade
-OCUPADO
-DISPONÍVEL PARA ALUGUEL
-DISPONÍVEL PARA VENDA
+- OCUPADO
+- DISPONÍVEL PARA ALUGUEL
+- DISPONÍVEL PARA VENDA
 
 ## Combinação de PostgreSQL e Redis
 Ao combinar PostgreSQL e Redis, você pode aproveitar o melhor dos dois mundos:
